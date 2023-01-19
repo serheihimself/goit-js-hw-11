@@ -80,3 +80,9 @@ btnSearch.addEventListener('click', e => {
       .join('');
     gallery.innerHTML += markup;
   }
+  
+  function cleanGallery() {
+    gallery.innerHTML = '';
+    pageNumber = 1;
+    btnLoadMore.style.display = 'none';
+  }
