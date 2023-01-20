@@ -3,22 +3,20 @@ import Notiflix from "notiflix";
 import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const input = document.querySelector('.search-form-input');
-const btnSearch = document.querySelector('.search-form-button');
-const gallery = document.querySelector('.gallery');
-const btnLoadMore = document.querySelector('.load-more');
-let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
+const mainInput = document.querySelector('.search-form-input');
+const onBtnSearch = document.querySelector('.search-form-button');
+const imgGallery = document.querySelector('.gallery');
+const onBtnLoad = document.querySelector('.load-more');
+let imgSimpleLightbox = new SimpleLightbox('.gallery a');
+onBtnLoad.style.display = 'none';
+let pageNum = 1;
 
-btnLoadMore.style.display = 'none';
-
-let pageNumber = 1;
-
-btnSearch.addEventListener('click', e => {
-    e.preventDefault();
-    cleanGallery();
-    const trimmedValue = input.value.trim();
-    if (trimmedValue !== '') {
-      fetchImages(trimmedValue, pageNumber).then(foundData => {
+onBtnSearch.addEventListener('click', elem => {
+    elem.preventDefault();
+    cleanList();
+    const getValue = mainInput.value.trim();
+    if (getValue !== '') {
+      fetchImages(getValue, pageNum).then(foundData => {
         if (foundData.hits.length === 0) {
           Notiflix.Notify.failure(
             'Sorry, there are no images matching your search query. Please try again.'
@@ -28,18 +26,18 @@ btnSearch.addEventListener('click', e => {
           Notiflix.Notify.success(
             `Hooray! We found ${foundData.totalHits} images.`
           );
-          btnLoadMore.style.display = 'block';
-          gallerySimpleLightbox.refresh();
+          onBtnLoad.style.display = 'block';
+          imgSimpleLightbox.refresh();
         }
       });
     }
   });
   
-  btnLoadMore.addEventListener('click', () => {
-    pageNumber++;
-    const trimmedValue = input.value.trim();
-    btnLoadMore.style.display = 'none';
-    fetchImages(trimmedValue, pageNumber).then(foundData => {
+  onBtnLoad.addEventListener('click', () => {
+    pageNum+=1;
+    const getValue = mainInput.value.trim();
+    onBtnLoad.style.display = 'none';
+    fetchImages(getValue, pageNum).then(foundData => {
       if (foundData.hits.length === 0) {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -49,14 +47,14 @@ btnSearch.addEventListener('click', e => {
         Notiflix.Notify.success(
           `Hooray! We found ${foundData.totalHits} images.`
         );
-        btnLoadMore.style.display = 'block';
+        onBtnLoad.style.display = 'block';
       }
     });
   });
   
   function renderImageList(images) {
     console.log(images, 'images');
-    const markup = images
+    const imgMarkup = images
       .map(image => {
         console.log('img', image);
         return `<div class="photo-card">
@@ -78,11 +76,11 @@ btnSearch.addEventListener('click', e => {
       </div>`;
       })
       .join('');
-    gallery.innerHTML += markup;
+    imgGallery.innerHTML += imgMarkup;
   }
   
-  function cleanGallery() {
-    gallery.innerHTML = '';
-    pageNumber = 1;
-    btnLoadMore.style.display = 'none';
+  function cleanList() {
+    onBtnLoad.style.display = 'none';
+    imgGallery.innerHTML = '';
+    pageNum = 1;
   }
