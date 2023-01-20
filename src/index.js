@@ -17,7 +17,7 @@ onBtnSearch.addEventListener('click', async (elem) => {
     const getValue = mainInput.value.trim();
     if (getValue !== '') {
       try {
-      const setResponse = await fetchImages(getValue, pageNum)
+      const setResponse = await fetchImages(getValue, pageNum, perPage)
         if (setResponse.hits.length === 0) {
           Notiflix.Notify.failure(
             'Sorry, there are no images matching your search query. Please try again.'
@@ -40,7 +40,7 @@ onBtnSearch.addEventListener('click', async (elem) => {
     pageNum+=1;
     const getValue = mainInput.value.trim();
 
-    fetchImages(getValue, pageNum).then(name => {
+    fetchImages(getValue, pageNum, perPage).then(name => {
       let totalPages = Math.ceil(name.totalHits / perPage);
       renderImageList(name.hits);
       if (pageNum >= totalPages) {
