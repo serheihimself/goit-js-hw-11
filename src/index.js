@@ -8,7 +8,6 @@ const onBtnSearch = document.querySelector('.search-form-button');
 const imgGallery = document.querySelector('.gallery');
 const onBtnLoad = document.querySelector('.load-more');
 let imgSimpleLightbox = new SimpleLightbox('.gallery a');
-onBtnLoad.style.display = 'none';
 let pageNum = 1;
 
 onBtnSearch.addEventListener('click', async (elem) => {
