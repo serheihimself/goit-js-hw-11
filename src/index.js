@@ -9,6 +9,7 @@ const imgGallery = document.querySelector('.gallery');
 const onBtnLoad = document.querySelector('.load-more');
 let imgSimpleLightbox = new SimpleLightbox('.gallery a');
 let pageNum = 1;
+let perPage = 40;
 
 onBtnSearch.addEventListener('click', async (elem) => {
     elem.preventDefault();
