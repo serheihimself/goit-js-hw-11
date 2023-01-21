@@ -8,6 +8,7 @@ const onBtnSearch = document.querySelector('.search-form-button');
 const imgGallery = document.querySelector('.gallery');
 const onBtnLoad = document.querySelector('.load-more');
 let imgSimpleLightbox = new SimpleLightbox('.gallery a');
+onBtnLoad.style.display = 'none';
 let pageNum = 1;
 let perPage = 40;
 
@@ -36,19 +37,22 @@ onBtnSearch.addEventListener('click', async (elem) => {
     }
   });
   
-  onBtnLoad.addEventListener('click', () => {
+  onBtnLoad.addEventListener('click', async () => {
     pageNum+=1;
     const getValue = mainInput.value.trim();
-
-    fetchImages(getValue, pageNum, perPage).then(name => {
-      let totalPages = Math.ceil(name.totalHits / perPage);
-      renderImageList(name.hits);
+    try {
+    const valueName = await fetchImages(getValue, pageNum, perPage)
+      let totalPages = Math.ceil(valueName.totalHits / perPage);
+      renderImageList(valueName.hits);
+      imgSimpleLightbox.refresh();
       if (pageNum >= totalPages) {
-        onBtnLoad.style.display = 'block';
+        onBtnLoad.style.display = 'none';
         console.log('There are no more images');
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")}
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+      }
+    } catch (error) {
+        console.log('Error:' + error)}
     });
-  });
   
   function renderImageList(images) {
     console.log(images, 'images');
